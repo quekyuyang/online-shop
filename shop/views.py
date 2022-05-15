@@ -2,8 +2,10 @@ from django.shortcuts import render
 from .models import Product, ProductImage
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import ProductForm
+from .forms import ProductForm, AddToCartForm
 from django.urls import reverse
+from django.views.decorators.http import require_POST
+from .cart import Cart
 
 
 def homepage(request):
@@ -38,6 +40,18 @@ def add_product(request):
 
 def product_details(request, product_id):
     product = Product.objects.get(id=product_id)
+    add_to_cart_form = AddToCartForm()
     template = loader.get_template('shop/product_details.html')
-    context = {'product': product}
+    context = {'product': product, 'add_to_cart_form': add_to_cart_form}
     return HttpResponse(template.render(context, request))
+
+
+@require_POST
+def add_to_cart(request, product_id):
+    cart = Cart(request)
+    product = Product.objects.get(id=product_id)
+    form = AddToCartForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        cart.add_product(product_id, cd['quantity'], product.price)
+    return HttpResponseRedirect(reverse(homepage))

@@ -8,3 +8,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'quantity', 'price']
+
+
+class AddToCartForm(forms.Form):
+    quantity = forms.IntegerField()
