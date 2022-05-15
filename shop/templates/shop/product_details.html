@@ -1,0 +1,27 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block head %}
+  <title>{{ product.name }}</title>
+  <link href="{% static "shop/product_details.css" %}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+<div id="content">
+<div id="main">
+  <div class="image">
+    {% for image in product.productimage_set.all %}
+      <img src="{{ image.image.url }}">
+    {% endfor %}
+    <button class="previous">&#10094;</button>
+    <button class="next">&#10095;</button>
+  </div>
+  <div id="product-info">
+    <div class="product-name">{{ product.name }}</div>
+    <div class="product-price">&euro; {{ product.price | floatformat:"2" }}</div>
+  </div>
+</div>
+</div>
+
+<script src="{% static 'shop/image_slideshow.js' %}"></script>
+{% endblock body %}

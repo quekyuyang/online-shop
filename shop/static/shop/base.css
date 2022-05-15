@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+}
+
+header {
+  position: relative;
+  background-color: #131921;
+  margin: 0;
+  width: 100%;
+}
+
+header a#logo {
+  text-decoration-line:none;
+  color: white;
+  font-size: 40px;
+  font-family: "Harrington", fantasy;
+  background-color: #131921;
+  margin: 10px;
+}
+
+header a#cart {
+  position: relative;
+  color: white;
+  left: 100px;
+  vertical-align: 50%;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+
+header a.user_auth {
+  position: relative;
+  left: 100px;
+  vertical-align: 50%;
+  color: white;
+  padding: 10px;
+}

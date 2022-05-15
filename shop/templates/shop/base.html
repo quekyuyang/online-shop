@@ -1,0 +1,18 @@
+{% load static %}
+
+<html lang="en">
+<head>
+  <link href="{% static 'shop/base.css' %}" rel="stylesheet">
+  {% block head %}
+  {% endblock head %}
+</head>
+<body>
+  <header>
+      <a id="logo" href="{% url 'homepage' %}">Atlantic</a>
+      <a id="cart">Cart</a>
+      <a class="user_auth">Log in</a>
+  </header>
+  {% block body %}
+  {% endblock body %}
+</body>
+</html>
