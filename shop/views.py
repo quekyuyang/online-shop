@@ -53,5 +53,5 @@ def add_to_cart(request, product_id):
     form = AddToCartForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add_product(product_id, cd['quantity'], product.price)
+        cart.add_product(product_id, cd['quantity'])
     return HttpResponseRedirect(reverse(homepage))

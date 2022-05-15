@@ -10,6 +10,11 @@ class Cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def add_product(self, product_id, quantity, price):
-        self.cart[str(product_id)] = {'quantity': quantity, 'price': price}
+    def add_product(self, product_id, quantity):
+        product = Product.objects.get(id=product_id)
+        self.cart[str(product_id)] = {
+        'name': product.name,
+        'quantity': quantity,
+        'price': product.price*quantity
+        }
         self.session.modified = True
