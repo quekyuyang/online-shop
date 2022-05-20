@@ -1,0 +1,47 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block head %}
+  <title>Cart</title>
+  <link href="{% static 'shop/cart.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+<div class="main">
+  <table class="cart">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in cart %}
+        <tr>
+          <td class="image">
+            <img src="{% if product.product.primary_image %}
+            {{product.product.primary_image.image.url}}
+            {% else %}{% static 'shop/default_image.png' %}{% endif %}">
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.price | floatformat:"2" }}</td>
+          <td>
+            <form action="{% url 'remove_from_cart' product.product.id %}" method="post">
+              <input type="submit" value="Remove">
+              {% csrf_token %}
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="order">
+    <div class="price">Total: &euro; {{ total_price | floatformat:"2" }}</div>
+  </div>
+</div>
+
+{% endblock body %}

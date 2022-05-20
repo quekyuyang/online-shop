@@ -1,0 +1,45 @@
+div.main {
+  display: flex;
+  margin: 30px 30px;
+}
+
+table.cart {
+  width: 50%;
+  border-collapse: collapse;
+}
+
+table.cart thead {
+  background-color: #5993bb;
+}
+
+table.cart td {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+td.image {
+  width: 200px;
+  height: 200px;
+}
+
+td.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: 50% 50%;
+}
+
+div.order {
+  flex: auto;
+  text-align: center;
+}
+
+div.order div.price {
+  display: inline-block;
+  text-align: center;
+  font-size: 40px;
+  padding: 10px;
+  margin: 50px auto;
+  border: solid;
+  border-radius: 5px;
+}

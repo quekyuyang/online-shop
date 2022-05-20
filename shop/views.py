@@ -53,5 +53,19 @@ def add_to_cart(request, product_id):
     form = AddToCartForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add_product(product_id, cd['quantity'])
+        cart.add(product_id, cd['quantity'])
     return HttpResponseRedirect(reverse(homepage))
+
+
+@require_POST
+def remove_from_cart(request, product_id):
+    cart = Cart(request)
+    cart.remove(product_id)
+    return HttpResponseRedirect(reverse('cart'))
+
+
+def cart(request):
+    cart = Cart(request)
+    template = loader.get_template('shop/cart.html')
+    context = {'cart': cart, 'total_price': cart.total_price()}
+    return HttpResponse(template.render(context, request))
