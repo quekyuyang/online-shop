@@ -1,0 +1,15 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block head %}
+  <title>Login</title>
+  <link href="{% static 'shop/login.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Log in">
+  </form>
+{% endblock body %}

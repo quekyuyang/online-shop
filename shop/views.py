@@ -2,9 +2,10 @@ from django.shortcuts import render
 from .models import Product, ProductImage
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import ProductForm, AddToCartForm
+from .forms import ProductForm, AddToCartForm, LoginForm
 from django.urls import reverse
 from django.views.decorators.http import require_POST
+from django.contrib import auth
 from .cart import Cart
 
 
@@ -69,3 +70,28 @@ def cart(request):
     template = loader.get_template('shop/cart.html')
     context = {'cart': cart, 'total_price': cart.total_price()}
     return HttpResponse(template.render(context, request))
+
+
+def login_page(request):
+    if request.method == 'GET':
+        form = LoginForm()
+    elif request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = auth.authenticate(request,
+                                username=cd['username'],
+                                password=cd['password'])
+            if user is not None:
+                auth.login(request, user)
+                return HttpResponseRedirect(reverse(homepage))
+            else:
+                return HttpResponse('Invalid login')
+
+    template = loader.get_template('shop/login.html')
+    context = {'form': form}
+    return HttpResponse(template.render(context, request))
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect(reverse(homepage))

@@ -12,3 +12,8 @@ class ProductForm(forms.ModelForm):
 
 class AddToCartForm(forms.Form):
     quantity = forms.IntegerField()
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
