@@ -35,3 +35,12 @@ header a.user_auth {
   color: white;
   padding: 10px;
 }
+
+
+header a.add_product {
+  position: absolute;
+  top: 50%;
+  right: 50px;
+  transform: translateY(-50%);
+  color: white;
+}
