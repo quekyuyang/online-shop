@@ -18,9 +18,9 @@ def homepage(request):
 
 def add_product(request):
     if request.method == 'GET':
-        form = ProductForm()
+        form = ProductForm(label_suffix='')
     elif request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
+        form = ProductForm(request.POST, request.FILES, label_suffix='')
         if form.is_valid():
             product = form.save(commit=False)
             product.seller = request.user

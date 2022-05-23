@@ -1,12 +1,15 @@
-<html lang="en">
-<head>
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block head %}
   <title>Add Product</title>
-</head>
-<body>
-  <form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p}}
-    <input type="submit" value="Submit">
-  </form>
-</body>
-</html>
+  <link href="{% static 'shop/add_product.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+<form action="" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Submit">
+</form>
+{% endblock body %}
