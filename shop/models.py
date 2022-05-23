@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 class Product(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=150)
     quantity = models.PositiveIntegerField(default=0)
     price = models.FloatField()
     seller = models.ForeignKey(User, on_delete=models.CASCADE)
