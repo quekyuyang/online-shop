@@ -8,6 +8,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'quantity', 'price']
+        widgets = {'name': forms.Textarea(attrs={'cols':80, 'rows':1})}
 
 
 class AddToCartForm(forms.Form):

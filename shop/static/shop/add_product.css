@@ -8,12 +8,15 @@ form {
   padding: 20px;
 }
 
-form label {
-  display: block;
-  margin-bottom: 10px;
+form * {
   font-size: 20px;
 }
 
-form input {
-  font-size: 20px;
+form textarea {
+  resize: none;
+}
+
+form label {
+  display: block;
+  margin-bottom: 10px;
 }
