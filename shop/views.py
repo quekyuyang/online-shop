@@ -21,7 +21,7 @@ def add_product(request):
         form = ProductForm(label_suffix='')
     elif request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, label_suffix='')
-        if form.is_valid():
+        if form.is_valid() and len(request.FILES.getlist('images')) <= 5:
             product = form.save(commit=False)
             product.seller = request.user
             product_images = []

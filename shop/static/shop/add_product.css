@@ -3,6 +3,7 @@ form {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  width: 1200px;
   border: 1px solid #bdb9b9;
   border-radius: 10px;
   padding: 20px;
@@ -19,4 +20,16 @@ form textarea {
 form label {
   display: block;
   margin-bottom: 10px;
+}
+
+div.image_selection {
+  height: 200px;
+  margin: 20px;
+}
+
+div.image_selection img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  margin: 0 10px;
 }
