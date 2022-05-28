@@ -23,10 +23,20 @@ function OnChange() {
     for (const file of files){
       let img = document.createElement("img");
       img.src = URL.createObjectURL(file);
+      img.addEventListener("click", OnClick);
       image_selection.append(img);
     }
   }
   else {
     image_selection.textContent = "You can only upload a maximum of 5 images";
   }
+}
+
+
+function OnClick() {
+  imgs = document.querySelectorAll("div.image_selection img");
+  for (let img of imgs) {
+    img.className = "";
+  }
+  this.className = "selected";
 }

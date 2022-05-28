@@ -33,3 +33,7 @@ div.image_selection img {
   object-fit: contain;
   margin: 0 10px;
 }
+
+.selected {
+  outline: 5px solid #3e8bf0;
+}
