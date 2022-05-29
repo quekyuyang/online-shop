@@ -10,8 +10,11 @@
 <div id="content">
 <div id="main">
   <div class="image">
+    <img src="{{ product.primary_image.image.url }}">
     {% for image in product.productimage_set.all %}
-      <img src="{{ image.image.url }}">
+      {% if image != product.primary_image %}
+        <img src="{{ image.image.url }}">
+      {% endif %}
     {% endfor %}
     <button class="previous">&#10094;</button>
     <button class="next">&#10095;</button>
