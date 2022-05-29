@@ -9,7 +9,16 @@
 {% block body %}
 <form action="" method="post" enctype="multipart/form-data">
   {% csrf_token %}
-  {{ form.as_p }}
+  {% for field in form %}
+    {% if forloop.counter != 5 %}
+      <p>
+        {{ field.label_tag }}
+        {{ field }}
+      </p>
+    {% else %}
+      {{ field.as_hidden }}
+    {% endif %}
+  {% endfor %}
   <input type="submit" value="Submit">
 </form>
 

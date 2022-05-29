@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 
 class ProductForm(forms.ModelForm):
     images = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple':True}))
+    i_primary_image = forms.IntegerField()
 
     class Meta:
         model = Product
@@ -14,6 +15,9 @@ class ProductForm(forms.ModelForm):
         cleaned_data = super().clean()
         if len(self.files.getlist('images')) > 5:
             raise ValidationError('You can only upload up to 5 images')
+
+        if cleaned_data['i_primary_image'] > len(self.files.getlist('images')) - 1:
+            raise ValidationError('Primary image index exceeding number of images')
 
 
 class AddToCartForm(forms.Form):

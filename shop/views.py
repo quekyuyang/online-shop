@@ -30,7 +30,7 @@ def add_product(request):
                 product_image = ProductImage(product=product, image=imagefile)
                 product_images.append(product_image)
                 product_image.save()
-            product.primary_image = product_images[0]
+            product.primary_image = product_images[form.cleaned_data['i_primary_image']]
             product.save()
             return HttpResponseRedirect(reverse(homepage))
 

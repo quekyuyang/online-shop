@@ -35,8 +35,15 @@ function OnChange() {
 
 function OnClick() {
   imgs = document.querySelectorAll("div.image_selection img");
+  let i = -1;
   for (let img of imgs) {
     img.className = "";
+    i += 1;
+    console.log(i);
+    if (this === img) {
+      console.log("Found selected image");
+      document.querySelector("input#id_i_primary_image").value = i;
+    }
   }
   this.className = "selected";
 }
