@@ -16,6 +16,7 @@ class AddProductViewTests(TestCase):
         cls.images = []
         for path in list(dirpath.iterdir()):
             cls.images.append(open(path, 'rb'))
+        assert(len(cls.images) > 5)  # Need more than 5 images to run tests
 
     def setUp(self):
         user = User.objects.create_user('user1', password='misoramen1')
@@ -41,8 +42,6 @@ class AddProductViewTests(TestCase):
         shutil.rmtree('test_media/')
 
     def test_too_many_images(self):
-        self.assertGreater(len(self.images), 5)
-
         form_data = dummy_product_form_data(self.images)
         response = self.client.post(reverse('add_product'), form_data)
         self.assertEqual(response.templates[0].name, 'shop/add_product.html')
