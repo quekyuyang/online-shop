@@ -21,6 +21,7 @@ class AddProductViewTests(TestCase):
 
         form_data = dummy_product_form_data(images)
         response = self.client.post(reverse('add_product'), form_data)
+        self.assertRedirects(response, reverse('homepage'))
 
         product = Product.objects.all()[0]
         self.assertEqual(product.name, form_data['name'])
