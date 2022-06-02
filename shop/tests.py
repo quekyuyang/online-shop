@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -111,3 +112,24 @@ def dummy_products(quantity):
         )
         products.append(product)
     return products
+
+
+class AddToCartTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('user1', password='misoramen1')
+
+    def test_add_to_cart(self):
+        product = dummy_products(1)[0]
+        form_data = {
+            'quantity': 10,
+        }
+
+        response = self.client.post(reverse('add_to_cart', args=[product.id]), form_data)
+        self.assertRedirects(response, reverse('homepage'))
+
+        session = self.client.session
+        cart = session[settings.CART_SESSION_ID]
+        entry = cart[str(product.id)]
+        self.assertEqual(entry['name'], product.name)
+        self.assertEqual(entry['quantity'], form_data['quantity'])
+        self.assertEqual(entry['price'], product.price*form_data['quantity'])
