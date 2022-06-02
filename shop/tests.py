@@ -86,6 +86,20 @@ class HomePageViewTest(TestCase):
         self.assertQuerysetEqual(products_homepage, products)
 
 
+class ProductDetailsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('user1', password='misoramen1')
+
+    def test_product_details(self):
+        product = dummy_products(1)[0]
+
+        response = self.client.get(reverse('product_details', args=[product.id]))
+        self.assertEqual(response.templates[0].name, 'shop/product_details.html')
+
+        product_from_view = response.context['product']
+        self.assertEqual(product, product_from_view)
+
+
 def dummy_products(quantity):
     products = []
     for i in range(quantity):
