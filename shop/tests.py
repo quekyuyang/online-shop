@@ -1,7 +1,7 @@
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Product
+from .models import Product, ProductImage
 import os
 from pathlib import Path
 import shutil
@@ -70,3 +70,30 @@ def dummy_product_form_data(images):
         'i_primary_image': 0
     }
     return form_data
+
+
+class HomePageViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('user1', password='misoramen1')
+
+    def test_homepage(self):
+        products = dummy_products(10)
+
+        response = self.client.get(reverse('homepage'))
+        self.assertEqual(response.templates[0].name, 'shop/homepage.html')
+
+        products_homepage = response.context['products'].order_by('id')
+        self.assertQuerysetEqual(products_homepage, products)
+
+
+def dummy_products(quantity):
+    products = []
+    for i in range(quantity):
+        product = Product.objects.create(
+            name=f'Product Name {i}',
+            quantity=100,
+            price=45.69,
+            seller=User.objects.get(id=1),
+        )
+        products.append(product)
+    return products
