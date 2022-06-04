@@ -75,7 +75,7 @@ def dummy_product_form_data(images):
 
 class HomePageViewTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user('user1', password='misoramen1')
+        User.objects.create_user('user1', password='misoramen1')
 
     def test_homepage(self):
         products = dummy_products(10)
@@ -89,7 +89,7 @@ class HomePageViewTest(TestCase):
 
 class ProductDetailsViewTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user('user1', password='misoramen1')
+        User.objects.create_user('user1', password='misoramen1')
 
     def test_product_details(self):
         product = dummy_products(1)[0]
@@ -116,7 +116,7 @@ def dummy_products(quantity):
 
 class CartTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user('user1', password='misoramen1')
+        User.objects.create_user('user1', password='misoramen1')
 
     def test_add_to_cart(self):
         product = dummy_products(1)[0]
