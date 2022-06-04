@@ -114,7 +114,7 @@ def dummy_products(quantity):
     return products
 
 
-class AddToCartTest(TestCase):
+class CartTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user('user1', password='misoramen1')
 
@@ -133,3 +133,21 @@ class AddToCartTest(TestCase):
         self.assertEqual(entry['name'], product.name)
         self.assertEqual(entry['quantity'], form_data['quantity'])
         self.assertEqual(entry['price'], product.price*form_data['quantity'])
+
+    def test_remove_from_cart(self):
+        product = dummy_products(1)[0]
+
+        session = self.client.session
+        cart = session[settings.CART_SESSION_ID] = {}
+        cart[str(product.id)] = {
+            'name': product.name,
+            'quantity': 10,
+            'price': 45.69,
+        }
+        session.save()
+        
+        response = self.client.post(reverse('remove_from_cart', args=[product.id]))
+        session = self.client.session
+        cart = session[settings.CART_SESSION_ID]
+        self.assertRedirects(response, reverse('cart'))
+        self.assertEqual(cart, {})
