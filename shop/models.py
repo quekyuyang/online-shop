@@ -24,4 +24,3 @@ def get_product_dir(image, filename):
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=get_product_dir, null=True)
-    thumbnail = models.ImageField(upload_to=get_product_dir, null=True)
