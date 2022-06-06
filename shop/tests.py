@@ -2,7 +2,7 @@ from django.conf import settings
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Product, ProductImage
+from .models import Product, ProductImage, Category
 import os
 from pathlib import Path
 import shutil
@@ -81,7 +81,7 @@ class HomePageViewTest(TestCase):
         products = dummy_products(10)
 
         response = self.client.get(reverse('homepage'))
-        self.assertEqual(response.templates[0].name, 'shop/homepage.html')
+        self.assertEqual(response.templates[0].name, 'shop/browse.html')
 
         products_homepage = response.context['products'].order_by('id')
         self.assertQuerysetEqual(products_homepage, products)
@@ -171,3 +171,33 @@ class LoginTest(TestCase):
         self.assertRedirects(response, reverse('homepage'))
         self.assertTrue(response.wsgi_request.user.is_authenticated)
         self.assertEqual(response.wsgi_request.user, user)
+
+
+class BrowseViewTest(TestCase):
+    def test_browse_category(self):
+        user = User.objects.create_user('user1', password='misoramen1')
+
+        category_gpu = Category.objects.create(name='GPU')
+        category_ssd = Category.objects.create(name='SSD')
+        category_psu = Category.objects.create(name='Power Supply')
+
+        product_gpu1 = Product.objects.create(name='GPU1', quantity=10, price=999, seller=user)
+        product_gpu1.categories.set([category_gpu])
+
+        product_gpu2 = Product.objects.create(name='GPU2', quantity=10, price=999, seller=user)
+        product_gpu2.categories.set([category_gpu])
+
+        product_ssd1 = Product.objects.create(name='SSD1', quantity=10, price=200, seller=user)
+        product_ssd1.categories.set([category_ssd])
+        
+        product_psu1 = Product.objects.create(name='Power Supply 1', quantity=10, price=100, seller=user)
+        product_psu1.categories.set([category_psu])
+
+        response = self.client.get(reverse('browse', args=['GPU']))
+        self.assertCountEqual(response.context['left_pane_categories'],
+                              [category_gpu, category_ssd, category_psu])
+        self.assertCountEqual(response.context['products'],
+                              [product_gpu1, product_gpu2])
+
+        response = self.client.get(reverse('browse', args=['SSD']))
+        self.assertCountEqual(response.context['products'], [product_ssd1])

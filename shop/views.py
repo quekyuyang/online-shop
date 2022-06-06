@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product, ProductImage
+from .models import Product, ProductImage, Category
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import ProductForm, AddToCartForm, LoginForm
@@ -11,8 +11,9 @@ from .cart import Cart
 
 def homepage(request):
     products = Product.objects.all()
-    template = loader.get_template('shop/homepage.html')
-    context = {'products': products}
+    left_pane_categories = Category.objects.all()
+    template = loader.get_template('shop/browse.html')
+    context = {'products': products, 'left_pane_categories': left_pane_categories}
     return HttpResponse(template.render(context, request))
 
 
@@ -92,6 +93,17 @@ def login_page(request):
     context = {'form': form}
     return HttpResponse(template.render(context, request))
 
+
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse(homepage))
+
+
+def browse(request, category_name):
+    category = Category.objects.get(name=category_name)
+    products = category.product_set.all()
+
+    left_pane_categories = Category.objects.all()
+    template = loader.get_template('shop/browse.html')
+    context = {'products': products, 'left_pane_categories': left_pane_categories}
+    return HttpResponse(template.render(context, request))

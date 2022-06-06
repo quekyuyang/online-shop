@@ -1,3 +1,20 @@
+div.main {
+  display: flex;
+}
+
+div.categories {
+  flex: initial;
+  width: 200px;
+}
+
+div.categories a {
+  display: block;
+}
+
+div.products {
+  flex: auto;
+}
+
 .image {
   float: left;
   width: 300px;

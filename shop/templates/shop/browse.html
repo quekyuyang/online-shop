@@ -1,0 +1,31 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block head %}
+  <title>Shop</title>
+  <link href="{% static "shop/browse.css" %}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+<div class="main">
+  <div class="categories">
+    {% for category in left_pane_categories %}
+      <a href="{% url 'browse' category.name %}">
+        {{ category.name }}
+      </a>
+    {% endfor %}
+  </div>
+  <div class="products">
+    {% for product in products %}
+      <a href="{{ product.get_absolute_url }}">
+        <div class="image">
+          <img src="{% if product.primary_image %}{{ product.primary_image.image.url }}
+                    {% else %}{% static 'shop/default_image.png' %}{% endif %}">
+          <div>{{ product.name | truncatechars:50 }}</div>
+          <div>{{ product.price | floatformat:"2" }}</div>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock body %}
