@@ -1,14 +1,32 @@
 div.main {
   display: flex;
+  padding: 10px;
 }
 
 div.categories {
-  flex: initial;
+  flex: 0 0 auto;
   width: 200px;
+  border-right: solid #cfcfcf;
+  margin-right: 30px;
 }
 
 div.categories a {
   display: block;
+  text-decoration: none;
+  color: black;
+}
+
+div.categories a:visited {
+  color: black;
+}
+
+div.categories a.child_category {
+  padding-left: 10px;
+  border-left: solid #8a8a8a;
+}
+
+a.current_category, a.sibling_category {
+  padding-left: 5px;
 }
 
 div.products {

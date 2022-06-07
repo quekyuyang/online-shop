@@ -196,8 +196,11 @@ class BrowseViewTest(TestCase):
         product_psu1.categories.set([category_psu])
 
         response = self.client.get(reverse('browse', args=['GPU']))
-        self.assertCountEqual(response.context['left_pane_categories'],
-                              [category_parent, category_gpu, category_ssd, category_psu])
+        self.assertEqual(response.context['current_category'], category_gpu)
+        self.assertCountEqual(response.context['sibling_categories'],
+                              [category_ssd, category_psu])
+        self.assertCountEqual(response.context['child_categories'],[])
+        self.assertEqual(response.context['parent_category'], category_parent)
         self.assertCountEqual(response.context['products'],
                               [product_gpu1, product_gpu2])
 
@@ -205,6 +208,12 @@ class BrowseViewTest(TestCase):
         self.assertCountEqual(response.context['products'], [product_ssd1])
 
         response = self.client.get(reverse('browse', args=['Computer Component']))
+        self.assertEqual(response.context['current_category'], category_parent)
+        self.assertCountEqual(response.context['sibling_categories'],
+                              [])
+        self.assertCountEqual(response.context['child_categories'],
+                              [category_gpu, category_ssd, category_psu])
+        self.assertEqual(response.context['parent_category'], None)
         self.assertCountEqual(response.context['products'],
                               [product_gpu1, product_gpu2, product_ssd1, product_psu1])
 

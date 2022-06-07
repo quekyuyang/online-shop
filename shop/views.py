@@ -11,9 +11,9 @@ from .cart import Cart
 
 def homepage(request):
     products = Product.objects.all()
-    left_pane_categories = Category.objects.all()
+    categories = Category.objects.all()
     template = loader.get_template('shop/browse.html')
-    context = {'products': products, 'left_pane_categories': left_pane_categories}
+    context = {'products': products, 'sibling_categories': categories}
     return HttpResponse(template.render(context, request))
 
 
@@ -101,11 +101,24 @@ def logout(request):
 
 def browse(request, category_name):
     category = Category.objects.get(name=category_name)
-    products = category_products(category)
 
-    left_pane_categories = Category.objects.all()
+    if category.parent:
+        sibling_categories = category.parent.children
+    else:
+        sibling_categories = Category.objects.filter(parent__isnull=True)
+    sibling_categories = sibling_categories.exclude(id=category.id)
+
+    child_categories = category.children.all()
+
+    products = category_products(category)
     template = loader.get_template('shop/browse.html')
-    context = {'products': products, 'left_pane_categories': left_pane_categories}
+    context = {
+        'products': products,
+        'current_category': category,
+        'sibling_categories': sibling_categories,
+        'child_categories': child_categories,
+        'parent_category': category.parent
+        }
     return HttpResponse(template.render(context, request))
 
 

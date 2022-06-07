@@ -9,8 +9,25 @@
 {% block body %}
 <div class="main">
   <div class="categories">
-    {% for category in left_pane_categories %}
-      <a href="{% url 'browse' category.name %}">
+    {% if parent_category %}
+      <a href="{% url 'browse' parent_category.name %}">
+        &#10094; {{ parent_category.name }}
+      </a>
+    {% endif %}
+    {% if current_category %}
+      <a class="current_category" href="{% url 'browse' current_category.name %}">
+        <strong>{{ current_category.name }}</strong>
+      </a>
+      {% if child_categories %}
+        {% for category in child_categories %}
+          <a class="child_category" href="{% url 'browse' category.name %}">
+            {{ category.name }}
+          </a>
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+    {% for category in sibling_categories %}
+      <a class="sibling_category" href="{% url 'browse' category.name %}">
         {{ category.name }}
       </a>
     {% endfor %}
