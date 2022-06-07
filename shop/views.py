@@ -101,9 +101,21 @@ def logout(request):
 
 def browse(request, category_name):
     category = Category.objects.get(name=category_name)
-    products = category.product_set.all()
+    products = category_products(category)
 
     left_pane_categories = Category.objects.all()
     template = loader.get_template('shop/browse.html')
     context = {'products': products, 'left_pane_categories': left_pane_categories}
     return HttpResponse(template.render(context, request))
+
+
+def category_products(category):
+    products = category.product_set.all()
+    if products:
+        return products
+    else:
+        child_categories = category.children.all()
+        products = Product.objects.none()
+        for child_category in child_categories:
+            products = products.union(category_products(child_category))
+        return products

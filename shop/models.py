@@ -31,7 +31,7 @@ class ProductImage(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=20, unique=True)
     parent = models.ForeignKey('Category', on_delete=models.SET_NULL,
-                               null=True, blank=True)
+                               related_name='children', null=True, blank=True)
 
     def __str__(self):
         return self.name
