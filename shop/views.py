@@ -11,7 +11,7 @@ from .cart import Cart
 
 def homepage(request):
     products = Product.objects.all()
-    categories = Category.objects.all()
+    categories = Category.objects.filter(parent__isnull=True)
     template = loader.get_template('shop/browse.html')
     context = {'products': products, 'sibling_categories': categories}
     return HttpResponse(template.render(context, request))
