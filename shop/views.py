@@ -35,7 +35,6 @@ def add_product(request):
             product.primary_image = product_images[form.cleaned_data['i_primary_image']]
             product.save()
             return HttpResponseRedirect(reverse(homepage))
-
     template = loader.get_template('shop/add_product.html')
     context = {'form':form}
     return HttpResponse(template.render(context, request))

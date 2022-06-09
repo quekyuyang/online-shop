@@ -22,6 +22,7 @@ class AddProductViewTests(TestCase):
     def setUp(self):
         user = User.objects.create_user('user1', password='misoramen1')
         self.client.force_login(user)
+        self.category = Category.objects.create(name='Category')
 
     def test_add_product(self):
         images = self.images[:5]
@@ -33,6 +34,7 @@ class AddProductViewTests(TestCase):
         self.assertEqual(product.name, form_data['name'])
         self.assertEqual(product.quantity, form_data['quantity'])
         self.assertEqual(product.price, form_data['price'])
+        self.assertQuerysetEqual(product.categories.all(), [self.category])
         self.assertEqual(len(product.productimage_set.all()), len(images))
 
         i_primary_image = form_data['i_primary_image']
@@ -67,6 +69,7 @@ def dummy_product_form_data(images):
         'name': 'Product Name',
         'quantity': 100,
         'price': 45.69,
+        'categories': ['1'],
         'images': images,
         'i_primary_image': 0
     }
