@@ -62,6 +62,11 @@ class AddProductViewTests(TestCase):
         self.assertEqual(response.templates[0].name, 'shop/add_product.html')
         self.assertEqual(len(Product.objects.all()), 0)
 
+        del form_data['i_primary_image']
+        response = self.client.post(reverse('add_product'), form_data)
+        self.assertEqual(response.templates[0].name, 'shop/add_product.html')
+        self.assertEqual(len(Product.objects.all()), 0)
+
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
