@@ -8,7 +8,7 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'quantity', 'price']
+        fields = ['name', 'quantity', 'price', 'categories']
         widgets = {'name': forms.Textarea(attrs={'cols':80, 'rows':1})}
 
     def clean(self):

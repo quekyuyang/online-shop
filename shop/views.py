@@ -27,6 +27,7 @@ def add_product(request):
             product.seller = request.user
             product_images = []
             product.save()
+            product.categories.add(*form.cleaned_data['categories'])
             for imagefile in request.FILES.getlist('images'):
                 product_image = ProductImage(product=product, image=imagefile)
                 product_images.append(product_image)
