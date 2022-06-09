@@ -50,7 +50,7 @@
           <img src="{% if product.primary_image %}{{ product.primary_image.image.url }}
                     {% else %}{% static 'shop/default_image.png' %}{% endif %}">
           <div>{{ product.name | truncatechars:50 }}</div>
-          <div>{{ product.price | floatformat:"2" }}</div>
+          <div>&euro; {{ product.price | floatformat:"2" }}</div>
         </div>
       </a>
     {% endfor %}
