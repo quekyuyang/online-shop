@@ -42,6 +42,12 @@
     </p>
     <input type="submit" value="Submit Review">
   </form>
+  <div class="reviews">
+    {% for review in reviews %}
+      <p><strong>{{ review.rating }}/5</strong></p>
+      <p>{{ review.content }}</p>
+    {% endfor %}
+  </div>
 </div>
 </div>
 

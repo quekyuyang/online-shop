@@ -45,9 +45,11 @@ def product_details(request, product_id):
     add_to_cart_form = AddToCartForm()
     review_form = ReviewForm(label_suffix='')
     review_form['content'].label = 'Leave a Review'
+    reviews = product.review_set.reverse()[:5]
+
     template = loader.get_template('shop/product_details.html')
     context = {'product': product, 'add_to_cart_form': add_to_cart_form,
-               'review_form': review_form}
+               'review_form': review_form, 'reviews': reviews}
     return HttpResponse(template.render(context, request))
 
 

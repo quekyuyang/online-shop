@@ -69,3 +69,8 @@ form label {
 textarea {
   resize: none;
 }
+
+div.reviews {
+  border-top: 1px solid #bdb9b9;
+  margin-top: 50px;
+}
