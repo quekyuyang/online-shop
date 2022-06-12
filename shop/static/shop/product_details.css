@@ -59,3 +59,13 @@ div.product-price {
   font-size: 40px;
   padding: 10px;
 }
+
+form label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+textarea {
+  resize: none;
+}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product
+from .models import Product, Review
 from django.core.exceptions import ValidationError
 
 
@@ -26,6 +26,13 @@ class ProductForm(forms.ModelForm):
 
 class AddToCartForm(forms.Form):
     quantity = forms.IntegerField()
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['content', 'rating']
+        widgets = {'content': forms.Textarea(attrs={'cols':150, 'rows':5})}
 
 
 class LoginForm(forms.Form):

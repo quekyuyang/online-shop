@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 
 class Product(models.Model):
@@ -35,3 +36,15 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+def validate_rating(rating):
+    if not 1 <= rating <= 5:
+        raise ValidationError('Invalid rating')
+
+
+class Review(models.Model):
+    content = models.CharField(max_length=2000)
+    rating = models.PositiveSmallIntegerField(validators=[validate_rating])
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)

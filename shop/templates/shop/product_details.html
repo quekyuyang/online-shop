@@ -29,6 +29,20 @@
     </form>
   </div>
 </div>
+<div>
+  <form action="{% url 'post_review' product.id %}" method="post">
+    {% csrf_token %}
+    <p>
+      {{ review_form.content.label_tag }}
+      {{ review_form.content }}
+    </p>
+    <p>
+      {{ review_form.rating.label_tag }}
+      {{ review_form.rating }}
+    </p>
+    <input type="submit" value="Submit Review">
+  </form>
+</div>
 </div>
 
 <script src="{% static 'shop/image_slideshow.js' %}"></script>

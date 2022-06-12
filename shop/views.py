@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Product, ProductImage, Category
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import ProductForm, AddToCartForm, LoginForm
+from .forms import ProductForm, AddToCartForm, LoginForm, ReviewForm
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.contrib import auth
@@ -43,9 +43,28 @@ def add_product(request):
 def product_details(request, product_id):
     product = Product.objects.get(id=product_id)
     add_to_cart_form = AddToCartForm()
+    review_form = ReviewForm(label_suffix='')
+    review_form['content'].label = 'Leave a Review'
     template = loader.get_template('shop/product_details.html')
-    context = {'product': product, 'add_to_cart_form': add_to_cart_form}
+    context = {'product': product, 'add_to_cart_form': add_to_cart_form,
+               'review_form': review_form}
     return HttpResponse(template.render(context, request))
+
+
+@require_POST
+def post_review(request, product_id):
+    product = Product.objects.get(id=product_id)
+    add_to_cart_form = AddToCartForm()
+    review_form = ReviewForm(request.POST, label_suffix='')
+    if review_form.is_valid():
+        review = review_form.save(commit=False)
+        review.product = product
+        review.user = request.user
+        review.save()
+    template = loader.get_template('shop/product_details.html')
+    context = {'product': product, 'add_to_cart_form': add_to_cart_form,
+               'review_form': review_form}
+    return HttpResponse(template.render(context,request))
 
 
 @require_POST
