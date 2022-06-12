@@ -6,6 +6,7 @@ from .forms import ProductForm, AddToCartForm, LoginForm, ReviewForm
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.contrib import auth
+from django.db.models import Avg
 from .cart import Cart
 
 
@@ -45,11 +46,14 @@ def product_details(request, product_id):
     add_to_cart_form = AddToCartForm()
     review_form = ReviewForm(label_suffix='')
     review_form['content'].label = 'Leave a Review'
-    reviews = product.review_set.reverse()[:5]
+    reviews = product.review_set.all()
+    mean_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    recent_reviews = reviews.reverse()[:5]
 
     template = loader.get_template('shop/product_details.html')
     context = {'product': product, 'add_to_cart_form': add_to_cart_form,
-               'review_form': review_form, 'reviews': reviews}
+               'review_form': review_form, 'reviews': recent_reviews,
+               'mean_rating': mean_rating}
     return HttpResponse(template.render(context, request))
 
 

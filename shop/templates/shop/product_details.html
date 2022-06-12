@@ -21,6 +21,7 @@
   </div>
   <div id="product-info">
     <div class="product-name">{{ product.name }}</div>
+    <div>{{ mean_rating | floatformat:"1" }}/5</div>
     <div class="product-price">&euro; {{ product.price | floatformat:"2" }}</div>
     <form action="{% url 'add_to_cart' product.id %}" method="post">
       {% csrf_token %}
