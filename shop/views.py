@@ -12,6 +12,13 @@ from .cart import Cart
 
 def homepage(request):
     products = Product.objects.all()
+    for product in products:
+        mean_rating = product.review_set.all().aggregate(Avg('rating'))['rating__avg']
+        if mean_rating:
+            product.rating_stars = rating_stars(round(mean_rating))
+        else:
+            product.rating_stars = ''
+
     categories = Category.objects.filter(parent__isnull=True)
     template = loader.get_template('shop/browse.html')
     context = {'products': products, 'sibling_categories': categories}
@@ -150,6 +157,13 @@ def browse(request, category_name):
     child_categories = category.children.all()
 
     products = category_products(category)
+    for product in products:
+        mean_rating = product.review_set.all().aggregate(Avg('rating'))['rating__avg']
+        if mean_rating:
+            product.rating_stars = rating_stars(round(mean_rating))
+        else:
+            product.rating_stars = ''
+
     template = loader.get_template('shop/browse.html')
     context = {
         'products': products,
