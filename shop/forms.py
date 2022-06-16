@@ -32,7 +32,8 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['content', 'rating']
-        widgets = {'content': forms.Textarea(attrs={'cols':150, 'rows':5})}
+        widgets = {'content': forms.Textarea(attrs={'cols':150, 'rows':5}),
+                   'rating': forms.RadioSelect()}
 
 
 class LoginForm(forms.Form):

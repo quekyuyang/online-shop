@@ -21,9 +21,9 @@
   </div>
   <div id="product-info">
     <div class="product-name">{{ product.name }}</div>
-    <div>{{ mean_rating | floatformat:"1" }}/5</div>
+    <div class="rating-stars">{{ rating_stars_str | safe }}</div>
     <div class="product-price">&euro; {{ product.price | floatformat:"2" }}</div>
-    <form action="{% url 'add_to_cart' product.id %}" method="post">
+    <form action="{% url 'add_to_cart' product.id %}" class="add-to-cart" method="post">
       {% csrf_token %}
       {{ add_to_cart_form.as_p }}
       <input type="submit" value="Add to cart">
@@ -31,21 +31,25 @@
   </div>
 </div>
 <div>
-  <form action="{% url 'post_review' product.id %}" method="post">
+  <form action="{% url 'post_review' product.id %}" class="review-submit" method="post">
     {% csrf_token %}
-    <p>
+    <p class="review-text">
       {{ review_form.content.label_tag }}
       {{ review_form.content }}
     </p>
-    <p>
-      {{ review_form.rating.label_tag }}
-      {{ review_form.rating }}
-    </p>
+
+    <div class="rating-select">
+      {% for radio in review_form.rating %}
+        <label for="{{ radio.id_for_label }}">{{ radio.choice_label | safe }}</label>
+        {{ radio.tag }}
+      {% endfor %}
+    </div>
+
     <input type="submit" value="Submit Review">
   </form>
   <div class="reviews">
     {% for review in reviews %}
-      <p><strong>{{ review.rating }}/5</strong></p>
+      <div class="rating-stars">{{ review.stars_str | safe }}</div>
       <p>{{ review.content }}</p>
     {% endfor %}
   </div>
@@ -53,4 +57,5 @@
 </div>
 
 <script src="{% static 'shop/image_slideshow.js' %}"></script>
+<script src="{% static 'shop/rating_stars.js' %}"></script>
 {% endblock body %}

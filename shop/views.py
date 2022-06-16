@@ -47,14 +47,31 @@ def product_details(request, product_id):
     review_form = ReviewForm(label_suffix='')
     review_form['content'].label = 'Leave a Review'
     reviews = product.review_set.all()
-    mean_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    if len(reviews) > 0:
+        mean_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+        stars_str = rating_stars(round(mean_rating))
+    else:
+        stars_str = ""
     recent_reviews = reviews.reverse()[:5]
+    for review in recent_reviews:
+        review.stars_str = rating_stars(review.rating)
 
     template = loader.get_template('shop/product_details.html')
-    context = {'product': product, 'add_to_cart_form': add_to_cart_form,
-               'review_form': review_form, 'reviews': recent_reviews,
-               'mean_rating': mean_rating}
+    context = {
+        'product': product,
+        'rating_stars_str': stars_str,
+        'add_to_cart_form': add_to_cart_form,
+        'review_form': review_form,
+        'reviews': recent_reviews,
+        }
     return HttpResponse(template.render(context, request))
+
+
+def rating_stars(rating):
+    total_stars = 5
+    stars_str = "&#9733;"*rating
+    stars_str += "&#9734;"*(total_stars-rating)
+    return stars_str
 
 
 @require_POST

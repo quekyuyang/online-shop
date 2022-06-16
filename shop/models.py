@@ -44,7 +44,15 @@ def validate_rating(rating):
 
 
 class Review(models.Model):
+    rating_choices = [
+        (1, '&#9734;'),
+        (2, '&#9734;'),
+        (3, '&#9734;'),
+        (4, '&#9734;'),
+        (5, '&#9734;')
+    ]
+
     content = models.CharField(max_length=2000)
-    rating = models.PositiveSmallIntegerField(validators=[validate_rating])
+    rating = models.PositiveSmallIntegerField(validators=[validate_rating], choices=rating_choices, default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
