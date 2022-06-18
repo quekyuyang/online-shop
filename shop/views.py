@@ -51,9 +51,17 @@ def add_product(request):
 def product_details(request, product_id):
     product = Product.objects.get(id=product_id)
     add_to_cart_form = AddToCartForm()
+
     review_form = ReviewForm(label_suffix='')
     review_form['content'].label = 'Leave a Review'
     reviews = product.review_set.all()
+    if reviews.filter(user=request.user).exists():
+        for field in review_form.fields.values():
+            field.disabled = True
+        review_form_disabled = True
+    else:
+        review_form_disabled = False
+
     if len(reviews) > 0:
         mean_rating = reviews.aggregate(Avg('rating'))['rating__avg']
         stars_str = rating_stars(round(mean_rating))
@@ -69,6 +77,7 @@ def product_details(request, product_id):
         'rating_stars_str': stars_str,
         'add_to_cart_form': add_to_cart_form,
         'review_form': review_form,
+        'review_form_disabled': review_form_disabled,
         'reviews': recent_reviews,
         }
     return HttpResponse(template.render(context, request))
@@ -85,7 +94,7 @@ def rating_stars(rating):
 def post_review(request, product_id):
     product = Product.objects.get(id=product_id)
     review_form = ReviewForm(request.POST, label_suffix='')
-    if review_form.is_valid():
+    if review_form.is_valid() and not product.review_set.filter(user=request.user).exists():
         review = review_form.save(commit=False)
         review.product = product
         review.user = request.user

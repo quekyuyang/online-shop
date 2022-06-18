@@ -45,7 +45,7 @@
       {% endfor %}
     </div>
 
-    <input type="submit" value="Submit Review">
+    <input type="submit" value="Submit Review" {% if review_form_disabled %}disabled{% endif %}>
   </form>
   <div class="reviews">
     {% for review in reviews %}
